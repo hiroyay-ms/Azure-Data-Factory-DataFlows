@@ -1,0 +1,18 @@
+{
+	"name": "copernicus",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "CosmosDb",
+		"typeProperties": {
+			"connectionString": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "AlphaCentauri",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "aw-cosmosDbConnectionString"
+			}
+		}
+	}
+}

@@ -1,0 +1,110 @@
+{
+	"name": "OrderFlow",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Product",
+						"type": "DatasetReference"
+					},
+					"name": "Product"
+				},
+				{
+					"dataset": {
+						"referenceName": "ProductCategory",
+						"type": "DatasetReference"
+					},
+					"name": "ProductCategory"
+				},
+				{
+					"dataset": {
+						"referenceName": "SalesOrderDetail",
+						"type": "DatasetReference"
+					},
+					"name": "SalesOrderDetail"
+				},
+				{
+					"dataset": {
+						"referenceName": "WatermarkTable",
+						"type": "DatasetReference"
+					},
+					"name": "WatermarkTable"
+				},
+				{
+					"dataset": {
+						"referenceName": "Customer",
+						"type": "DatasetReference"
+					},
+					"name": "Customer"
+				},
+				{
+					"dataset": {
+						"referenceName": "Address",
+						"type": "DatasetReference"
+					},
+					"name": "Address"
+				},
+				{
+					"dataset": {
+						"referenceName": "SalesOrderHeader",
+						"type": "DatasetReference"
+					},
+					"name": "SalesOrderHeader"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "AdventureWorks",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "ProductMaster"
+				},
+				{
+					"name": "Join1"
+				},
+				{
+					"name": "TypeCast"
+				},
+				{
+					"name": "MakeStruct"
+				},
+				{
+					"name": "Join2"
+				},
+				{
+					"name": "Join3"
+				},
+				{
+					"name": "Join4"
+				},
+				{
+					"name": "Join5"
+				},
+				{
+					"name": "ColumnScrubber"
+				},
+				{
+					"name": "CustomerStruct"
+				},
+				{
+					"name": "AddressStruct"
+				},
+				{
+					"name": "TypeCast2"
+				},
+				{
+					"name": "Aggregate1"
+				}
+			],
+			"script": "source(output(\n\t\tProductID as integer,\n\t\tName as string,\n\t\tProductNumber as string,\n\t\tColor as string,\n\t\tStandardCost as decimal(19,4),\n\t\tListPrice as decimal(19,4),\n\t\tSize as string,\n\t\tWeight as decimal(8,2),\n\t\tProductCategoryID as integer,\n\t\tProductModelID as integer,\n\t\tSellStartDate as timestamp,\n\t\tSellEndDate as timestamp,\n\t\tDiscontinuedDate as timestamp,\n\t\tThumbNailPhoto as binary,\n\t\tThumbnailPhotoFileName as string,\n\t\trowguid as string,\n\t\tModifiedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> Product\nsource(output(\n\t\tProductCategoryID as integer,\n\t\tCategory as string,\n\t\tSubCategory as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tquery: '  select \\n   pc1.ProductCategoryID,\\n   pc2.Name as Category,\\n   pc1.Name as SubCategory\\n   from [SalesLT].[ProductCategory] pc1 inner join \\n   (\\n    select \\n     ProductCategoryID,\\n     Name\\n     from [SalesLT].[ProductCategory]\\n     where ParentProductCategoryID is null\\n   ) pc2 on pc1.ParentProductCategoryID = pc2.ProductCategoryID',\n\tformat: 'query') ~> ProductCategory\nsource(output(\n\t\tSalesOrderID as integer,\n\t\tSalesOrderDetailID as integer,\n\t\tOrderQty as short,\n\t\tProductID as integer,\n\t\tUnitPrice as decimal(19,4),\n\t\tUnitPriceDiscount as decimal(19,4),\n\t\tLineTotal as decimal(38,6),\n\t\trowguid as string,\n\t\tModifiedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> SalesOrderDetail\nsource(output(\n\t\tWatermarkValue as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> WatermarkTable\nsource(output(\n\t\tCustomerID as integer,\n\t\tCompanyName as string,\n\t\tFirstName as string,\n\t\tLastName as string,\n\t\tPhone as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tquery: 'select \\n CustomerID,\\n CompanyName,\\n FirstName,\\n LastName,\\n Phone \\nfrom SalesLT.Customer',\n\tformat: 'query') ~> Customer\nsource(output(\n\t\tAddressID as integer,\n\t\tAddressLine1 as string,\n\t\tAddressLine2 as string,\n\t\tCity as string,\n\t\tStateProvince as string,\n\t\tCountryRegion as string,\n\t\tPostalCode as string,\n\t\trowguid as string,\n\t\tModifiedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> Address\nsource(output(\n\t\tSalesOrderID as integer,\n\t\tRevisionNumber as byte,\n\t\tOrderDate as timestamp,\n\t\tDueDate as timestamp,\n\t\tShipDate as timestamp,\n\t\tStatus as byte,\n\t\tOnlineOrderFlag as boolean,\n\t\tSalesOrderNumber as string,\n\t\tPurchaseOrderNumber as string,\n\t\tAccountNumber as string,\n\t\tCustomerID as integer,\n\t\tShipToAddressID as integer,\n\t\tBillToAddressID as integer,\n\t\tShipMethod as string,\n\t\tCreditCardApprovalCode as string,\n\t\tSubTotal as decimal(19,4),\n\t\tTaxAmt as decimal(19,4),\n\t\tFreight as decimal(19,4),\n\t\tTotalDue as decimal(19,4),\n\t\tComment as string,\n\t\trowguid as string,\n\t\tModifiedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> SalesOrderHeader\nProduct, ProductCategory join(Product@ProductCategoryID == ProductCategory@ProductCategoryID,\n\tjoinType:'inner',\n\tbroadcast: 'auto')~> ProductMaster\nSalesOrderDetail, ProductMaster join(SalesOrderDetail@ProductID == Product@ProductID,\n\tjoinType:'inner',\n\tbroadcast: 'auto')~> Join1\nJoin1 derive(UnitPrice = toDouble(round(UnitPrice,2)),\n\t\tOrderQty = toInteger(OrderQty)) ~> TypeCast\nTypeCast derive(orderdetailsstruct = @(salesOrderDetailId=SalesOrderDetailID,\n\t\tproductId=Product@ProductID,\n\t\tproductNumber=ProductNumber,\n\t\tproductName=Name,\n\t\tcategory=Category,\n\t\tsubCategory=SubCategory,\n\t\torderQTY=OrderQty,\n\t\tunitPrice=UnitPrice)) ~> MakeStruct\nSalesOrderHeader, Customer join(SalesOrderHeader@CustomerID == Customer@CustomerID,\n\tjoinType:'inner',\n\tbroadcast: 'auto')~> Join2\nCustomerStruct, Address join(BillToAddressID == AddressID,\n\tjoinType:'inner',\n\tbroadcast: 'auto')~> Join3\nAddressStruct, MakeStruct join(SalesOrderHeader@SalesOrderID == SalesOrderDetail@SalesOrderID,\n\tjoinType:'inner',\n\tbroadcast: 'auto')~> Join4\nJoin4, WatermarkTable join(SalesOrderHeader@ModifiedDate>WatermarkValue,\n\tjoinType:'cross',\n\tbroadcast: 'auto')~> Join5\nJoin5 select(mapColumn(\n\t\tsalesOrderId = SalesOrderHeader@SalesOrderID,\n\t\torderDate = OrderDate,\n\t\tshipDate = ShipDate,\n\t\tstatus = Status,\n\t\tonlineOrderFlag = OnlineOrderFlag,\n\t\tsalesOrderNumber = SalesOrderNumber,\n\t\tpurchaseOrderNumber = PurchaseOrderNumber,\n\t\tshipMethod = ShipMethod,\n\t\tsubTotal = SubTotal,\n\t\ttaxAmt = TaxAmt,\n\t\tfreight = Freight,\n\t\ttotalDue = TotalDue,\n\t\tcustomer,\n\t\tbillTo = BillTo,\n\t\tsalesOrderDetailId = SalesOrderDetailID,\n\t\torderdetailsstruct\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> ColumnScrubber\nJoin2 derive(customer = @(customerId=Customer@CustomerID,\n\t\tcompanyName=CompanyName,\n\t\tfirstName=FirstName,\n\t\tlastName=LastName,\n\t\tphone=Phone)) ~> CustomerStruct\nJoin3 derive(BillTo = @(addressId=AddressID,\n\t\taddressLine1=AddressLine1,\n\t\taddressLine2=AddressLine2,\n\t\tcity=City,\n\t\tstateProvince=StateProvince,\n\t\tcountryRegion=CountryRegion,\n\t\tpostalCode=PostalCode)) ~> AddressStruct\nColumnScrubber derive(subTotal = toDouble(round(subTotal,2)),\n\t\ttaxAmt = toDouble(round(taxAmt,2)),\n\t\tfreight = toDouble(round(freight,2)),\n\t\ttotalDue = toDouble(round(totalDue,2))) ~> TypeCast2\nTypeCast2 aggregate(groupBy(salesOrderId),\n\tdetails = collect(orderdetailsstruct),\n\t\teach(match(instr(name,'OrderQty')==0&&instr(name,'UnitPrice')==0&&instr(name,'salesOrderId')==0), $$ = first($$))) ~> Aggregate1\nAggregate1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'document',\n\tpartitionKey: ['/salesOrderId'],\n\tmapColumn(\n\t\tsalesOrderId,\n\t\tdetails,\n\t\torderDate,\n\t\tshipDate,\n\t\tstatus,\n\t\tonlineOrderFlag,\n\t\tsalesOrderNumber,\n\t\tpurchaseOrderNumber,\n\t\tshipMethod,\n\t\tsubTotal,\n\t\ttaxAmt,\n\t\tfreight,\n\t\ttotalDue,\n\t\tcustomer,\n\t\tbillTo,\n\t\tsalesOrderDetailId\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
+		}
+	}
+}
