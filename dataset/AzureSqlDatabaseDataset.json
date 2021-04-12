@@ -1,0 +1,26 @@
+{
+	"name": "AzureSqlDatabaseDataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "kepler",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "SalesOrderId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "C2",
+				"type": "nchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "t1"
+		}
+	}
+}
