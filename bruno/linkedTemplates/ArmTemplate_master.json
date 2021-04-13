@@ -1,0 +1,97 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "データ ファクトリ名",
+			"defaultValue": "bruno"
+		},
+		"AzureSqlDWLinkedService_connectionString": {
+			"type": "secureString",
+			"metadata": "'AzureSqlDWLinkedService' の 'connectionString' のセキュリティで保護された文字列"
+		},
+		"AlphaCentauri_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://AlphaCentauri.vault.azure.net/"
+		},
+		"copernicus_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "aw-cosmosDbConnectionString"
+		},
+		"eccentricplanet_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "aw-blobConnectionString"
+		},
+		"kepler_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "aw-sqlConnectionString"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "リンクされた ARM テンプレートを含むストレージ アカウントの URI"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "リンクされた ARM テンプレートを格納するストレージ アカウントへの SAS トークン"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "bruno_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"AzureSqlDWLinkedService_connectionString": {
+						"value": "[parameters('AzureSqlDWLinkedService_connectionString')]"
+					},
+					"AlphaCentauri_properties_typeProperties_baseUrl": {
+						"value": "[parameters('AlphaCentauri_properties_typeProperties_baseUrl')]"
+					},
+					"copernicus_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('copernicus_properties_typeProperties_connectionString_secretName')]"
+					},
+					"eccentricplanet_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('eccentricplanet_properties_typeProperties_connectionString_secretName')]"
+					},
+					"kepler_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('kepler_properties_typeProperties_connectionString_secretName')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "bruno_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'bruno_ArmTemplate_0')]"
+			]
+		}
+	]
+}

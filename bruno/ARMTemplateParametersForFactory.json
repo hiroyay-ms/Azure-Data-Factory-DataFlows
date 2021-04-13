@@ -1,0 +1,24 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "bruno"
+		},
+		"AzureSqlDWLinkedService_connectionString": {
+			"value": ""
+		},
+		"AlphaCentauri_properties_typeProperties_baseUrl": {
+			"value": "https://AlphaCentauri.vault.azure.net/"
+		},
+		"copernicus_properties_typeProperties_connectionString_secretName": {
+			"value": "aw-cosmosDbConnectionString"
+		},
+		"eccentricplanet_properties_typeProperties_connectionString_secretName": {
+			"value": "aw-blobConnectionString"
+		},
+		"kepler_properties_typeProperties_connectionString_secretName": {
+			"value": "aw-sqlConnectionString"
+		}
+	}
+}
