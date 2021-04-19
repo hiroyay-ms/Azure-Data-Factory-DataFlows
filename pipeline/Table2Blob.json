@@ -31,6 +31,7 @@
 						}
 					},
 					"enableStaging": false,
+					"parallelCopies": 4,
 					"translator": {
 						"type": "TabularTranslator",
 						"typeConversion": true,
