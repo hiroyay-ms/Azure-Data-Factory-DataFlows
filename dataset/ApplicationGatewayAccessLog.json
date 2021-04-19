@@ -1,0 +1,15 @@
+{
+	"name": "ApplicationGatewayAccessLog",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ritagograTableStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureTable",
+		"schema": [],
+		"typeProperties": {
+			"tableName": "ApplicationGatewayAccessLog"
+		}
+	}
+}
