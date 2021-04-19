@@ -1,8 +1,0 @@
-{
-	"name": "hiroyaylabv2Table",
-	"properties": {
-		"annotations": [],
-		"type": "AzureTable",
-		"schema": []
-	}
-}
