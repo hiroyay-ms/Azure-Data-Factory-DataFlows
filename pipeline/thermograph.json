@@ -1,5 +1,5 @@
 {
-	"name": "Table2Blob",
+	"name": "thermograph",
 	"properties": {
 		"activities": [
 			{
@@ -43,7 +43,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ApplicationGatewayAccessLog",
+						"referenceName": "thermograph",
 						"type": "DatasetReference"
 					}
 				],
