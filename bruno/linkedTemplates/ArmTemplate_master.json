@@ -11,6 +11,18 @@
 			"type": "secureString",
 			"metadata": "'AzureSqlDWLinkedService' の 'connectionString' のセキュリティで保護された文字列"
 		},
+		"ritagograTableStorage_connectionString": {
+			"type": "secureString",
+			"metadata": "'ritagograTableStorage' の 'connectionString' のセキュリティで保護された文字列"
+		},
+		"ritagograBlobStorage_connectionString": {
+			"type": "secureString",
+			"metadata": "'ritagograBlobStorage' の 'connectionString' のセキュリティで保護された文字列"
+		},
+		"AzureTableStorage1_connectionString": {
+			"type": "secureString",
+			"metadata": "'AzureTableStorage1' の 'connectionString' のセキュリティで保護された文字列"
+		},
 		"AlphaCentauri_properties_typeProperties_baseUrl": {
 			"type": "string",
 			"defaultValue": "https://AlphaCentauri.vault.azure.net/"
@@ -56,6 +68,15 @@
 					},
 					"AzureSqlDWLinkedService_connectionString": {
 						"value": "[parameters('AzureSqlDWLinkedService_connectionString')]"
+					},
+					"ritagograTableStorage_connectionString": {
+						"value": "[parameters('ritagograTableStorage_connectionString')]"
+					},
+					"ritagograBlobStorage_connectionString": {
+						"value": "[parameters('ritagograBlobStorage_connectionString')]"
+					},
+					"AzureTableStorage1_connectionString": {
+						"value": "[parameters('AzureTableStorage1_connectionString')]"
 					},
 					"AlphaCentauri_properties_typeProperties_baseUrl": {
 						"value": "[parameters('AlphaCentauri_properties_typeProperties_baseUrl')]"

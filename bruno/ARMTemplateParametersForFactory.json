@@ -8,6 +8,15 @@
 		"AzureSqlDWLinkedService_connectionString": {
 			"value": ""
 		},
+		"ritagograTableStorage_connectionString": {
+			"value": ""
+		},
+		"ritagograBlobStorage_connectionString": {
+			"value": ""
+		},
+		"AzureTableStorage1_connectionString": {
+			"value": ""
+		},
 		"AlphaCentauri_properties_typeProperties_baseUrl": {
 			"value": "https://AlphaCentauri.vault.azure.net/"
 		},
